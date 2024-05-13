@@ -13,8 +13,7 @@ let package = Package(
         .watchOS(.v4)
     ],
     products: [
-        .library(name: "SpryKit", targets: ["SpryKit"]),
-        .library(name: "FakeifyKit", targets: ["FakeifyKit"]),
+        .library(name: "SpryKit", targets: ["SpryKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/mattgallagher/CwlPreconditionTesting.git", .upToNextMinor(from: "2.2.1")),
@@ -22,24 +21,17 @@ let package = Package(
     ],
     targets: [
         .macro(
-            name: "FakeifyMacro",
+            name: "SpryableMacro",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ],
             path: "Macro"
         ),
-        .target(name: "FakeifyKit",
-                dependencies: [
-                    "FakeifyMacro"
-                ],
-                path: "FakeifyKit",
-                resources: [
-                    .copy("../PrivacyInfo.xcprivacy")
-                ]),
         .target(name: "SpryKit",
                 dependencies: [
-                    "CwlPreconditionTesting"
+                    "CwlPreconditionTesting",
+                    "SpryableMacro"
                 ],
                 path: "SpryKit",
                 resources: [
@@ -48,30 +40,8 @@ let package = Package(
         .testTarget(name: "SpryKitTests",
                     dependencies: [
                         "SpryKit",
-                        "FakeifyKit",
                         .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
                     ],
-                    path: "SpryKitTests",
-                    swiftSettings: [
-                        .define("FACKING")
-                    ]),
-        .target(name: "DemoSpryKit",
-                dependencies: [
-                    "FakeifyKit"
-                ],
-                path: "Demo/Source",
-                resources: [
-                    .copy("../../PrivacyInfo.xcprivacy")
-                ]),
-        .testTarget(name: "DemoSpryKitTests",
-                    dependencies: [
-                        "DemoSpryKit",
-                        "SpryKit",
-                        "FakeifyKit"
-                    ],
-                    path: "Demo/Tests",
-                    swiftSettings: [
-                        .define("FACKING")
-                    ])
+                    path: "SpryKitTests")
     ]
 )

@@ -1,7 +1,7 @@
-import FakeifyKit
 import Foundation
+import SpryableKit
 
-@Fakeify
+@Spryable
 public protocol Foo {
     var bar: Int { get }
     func bar(_: Int) -> Int

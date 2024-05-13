@@ -2,8 +2,8 @@ import SwiftCompilerPlugin
 import SwiftSyntaxMacros
 
 @main
-struct FakeifyCompilerPlugin: CompilerPlugin {
+struct SpryableCompilerPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        FakeifyMacro.self
+        SpryableMacro.self
     ]
 }

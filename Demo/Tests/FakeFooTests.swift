@@ -1,8 +1,8 @@
 import DemoSpryKit
 import Foundation
+import SpryableKit
 import SpryKit
 import XCTest
-import FakeifyKit
 
 final class FakeFooTests: XCTestCase {
     func test_fake() async throws {

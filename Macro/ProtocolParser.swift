@@ -37,12 +37,12 @@ struct Requirements {
         var variables: [VariableRequirement] = []
         for member in members {
             if member.decl.is(SubscriptDeclSyntax.self) {
-                throw FakeifyDiagnostic.subscriptsNotSupported
+                throw SpryableDiagnostic.subscriptsNotSupported
             } else if let decl = member.decl.as(VariableDeclSyntax.self) {
                 variables.append(VariableRequirement(index: variables.count, syntax: decl))
             } else if let decl = member.decl.as(FunctionDeclSyntax.self) {
                 guard case .identifier = decl.name.tokenKind else {
-                    throw FakeifyDiagnostic.operatorsNotSupported
+                    throw SpryableDiagnostic.operatorsNotSupported
                 }
                 functions.append(FunctionRequirement(index: variables.count, syntax: decl))
             }

@@ -1,9 +1,9 @@
 import SwiftSyntax
 import SwiftSyntaxBuilder
 
-struct FakeifyFactory {
+struct SpryableFactory {
     static func classDeclaration(for protocolDeclaration: ProtocolDeclSyntax) throws -> ClassDeclSyntax {
-        let attributes = protocolDeclaration.attributes.filterFakeify()
+        let attributes = protocolDeclaration.attributes.filterSpryable()
         let modifiers = protocolDeclaration.modifiers.trimmed + [DeclModifierSyntax(name: .keyword(.final))]
         let identifier = TokenSyntax.identifier("Fake" + protocolDeclaration.name.text)
         let genericParameterClause = constructGenericParameterClause(protocolDeclaration)
@@ -245,7 +245,7 @@ struct FakeifyFactory {
 }
 
 private extension AttributeListSyntax {
-    func filterFakeify() -> AttributeListSyntax {
+    func filterSpryable() -> AttributeListSyntax {
         return filter {
             switch $0 {
             case .attribute(let attribute):
@@ -253,7 +253,7 @@ private extension AttributeListSyntax {
                     return true
                 }
 
-                let result = id.text == "Fakeify"
+                let result = id.text == "Spryable"
                 return !result
             case .ifConfigDecl:
                 return true
@@ -269,7 +269,7 @@ private extension VariableDeclSyntax {
                 return $0.accessorSpecifier.tokenKind == .keyword(.get)
             }
             guard let getAccessor else {
-                throw FakeifyDiagnostic.invalidVariableRequirement
+                throw SpryableDiagnostic.invalidVariableRequirement
             }
             return getAccessor
         }
@@ -284,7 +284,7 @@ private extension VariableDeclSyntax {
     var binding: PatternBindingSyntax {
         get throws {
             guard let binding = bindings.first else {
-                throw FakeifyDiagnostic.invalidVariableRequirement
+                throw SpryableDiagnostic.invalidVariableRequirement
             }
             return binding
         }
@@ -294,7 +294,7 @@ private extension VariableDeclSyntax {
         get throws {
             guard let accessorBlock = try binding.accessorBlock,
                   case .accessors(let accessorList) = accessorBlock.accessors else {
-                throw FakeifyDiagnostic.invalidVariableRequirement
+                throw SpryableDiagnostic.invalidVariableRequirement
             }
             return accessorList
         }

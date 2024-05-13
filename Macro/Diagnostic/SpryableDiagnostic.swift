@@ -1,6 +1,6 @@
 import SwiftDiagnostics
 
-enum FakeifyDiagnostic: String, DiagnosticMessage, Error {
+enum SpryableDiagnostic: String, DiagnosticMessage, Error {
     case onlyApplicableToProtocol
     case preprocessorFlagArgumentRequiresStaticStringLiteral
     case subscriptsNotSupported
@@ -11,11 +11,11 @@ enum FakeifyDiagnostic: String, DiagnosticMessage, Error {
     var message: String {
         switch self {
         case .onlyApplicableToProtocol:
-            return "`@Fakeify` can only be applied to a `protocol`"
+            return "`@Spryable` can only be applied to a `protocol`"
         case .preprocessorFlagArgumentRequiresStaticStringLiteral:
             return "The `preprocessorFlag` argument requires a static string literal"
         case .subscriptsNotSupported:
-            return "Subscript requirements are not supported by `@Fakeify`"
+            return "Subscript requirements are not supported by `@Spryable`"
         case .operatorsNotSupported:
             return "Operator requirements are not supported by @Mockable."
         case .invalidVariableRequirement:
@@ -37,6 +37,6 @@ enum FakeifyDiagnostic: String, DiagnosticMessage, Error {
 
     /// Unique identifier for each diagnostic message, facilitating precise error tracking.
     var diagnosticID: MessageID {
-        MessageID(domain: "FakeifyMacro", id: rawValue)
+        MessageID(domain: "SpryableMacro", id: rawValue)
     }
 }
