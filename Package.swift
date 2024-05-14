@@ -40,6 +40,7 @@ let package = Package(
         .testTarget(name: "SpryKitTests",
                     dependencies: [
                         "SpryKit",
+                        "SpryableMacro",
                         .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
                     ],
                     path: "SpryKitTests")

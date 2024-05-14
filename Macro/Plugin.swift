@@ -4,6 +4,13 @@ import SwiftSyntaxMacros
 @main
 struct SpryableCompilerPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        SpryableMacro.self
+        SpryableAccessorMacro.self,
+        SpryableCodeItemMacro.self,
+        SpryableDeclarationMacro.self,
+        SpryableExpressionMacro.self,
+        SpryableExtensionMacro.self,
+        SpryableMemberAttributeMacro.self,
+        SpryableMemberMacro.self,
+        SpryablePeerMacro.self
     ]
 }

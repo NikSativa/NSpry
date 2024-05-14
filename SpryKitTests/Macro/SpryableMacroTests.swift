@@ -1,17 +1,25 @@
 import SpriteKit
+import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
 
 @testable import SpryableMacro
 
 final class SpryableMacroTests: XCTestCase {
-    private let sut = ["Spryable": SpryableMacro.self]
+    private let sut: [String: Macro.Type] = [
+        "SpryableAccessorMacro": SpryableAccessorMacro.self,
+        "SpryableCodeItemMacro": SpryableCodeItemMacro.self,
+        "SpryableDeclarationMacro": SpryableDeclarationMacro.self,
+        "SpryableExpressionMacro": SpryableExpressionMacro.self,
+        "SpryableExtensionMacro": SpryableExtensionMacro.self,
+        "SpryableMemberAttributeMacro": SpryableMemberAttributeMacro.self,
+        "SpryableMemberMacro": SpryableMemberMacro.self,
+        "SpryablePeerMacro": SpryablePeerMacro.self
+    ]
 
     func testStaticVarMacro() {
         let protocolDeclaration =
             """
-            public extension Foo {}
-
             public protocol Foo {
                 static var barStatic: Int { get }
                 static var barStaticSet: Int { get set }
@@ -19,15 +27,19 @@ final class SpryableMacroTests: XCTestCase {
                 static var barStaticAsyncThrows: Int { get async throws  }
             }
             """
-        assertMacroExpansion("""
-                             @Spryable
-                             \(protocolDeclaration)
-                             """,
-                             expandedSource:
-                             """
-                             \(protocolDeclaration)
-                             """,
-                             macros: sut)
+
+        for macroName in sut.keys.sorted() {
+            assertMacroExpansion("""
+                                 \(protocolDeclaration)
+
+                                 #\(macroName)(Foo.self)
+                                 """,
+                                 expandedSource:
+                                 """
+                                 public extension Foo {}
+                                 """,
+                                 macros: sut)
+        }
     }
 
 //    func testVarMacro() {
